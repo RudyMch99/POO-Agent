@@ -70,3 +70,32 @@ stateDiagram-v2
     StateAttack --> StatScan : ennemi perdu de vue
 
 ```
+
+Ce diagramme de séquence montre les étapes d'un programme informatique qui crée un agent spécial appelé "Henry", puis le rafraîchit. L'agent utilise ensuite une machine d'état qui passe à l'état "Scan" et effectue une action. Ensuite, l'état change pour "Attack". 
+
+```mermaid
+sequenceDiagram
+    activate main
+    main ->> SpecialAgent : new SpecialAgent("Henry")
+    activate SpecialAgent
+    main->>SpecialAgent: refresh()
+    SpecialAgent ->> StateMachine : new StateMachine(New ScanState)
+     activate StateMachine
+     activate ScanState
+    SpecialAgent->>StateMachine: update()
+    StateMachine->>ScanState: doAction()
+    ScanState->>StateMachine: setState(new AttackState())
+    activate AttackState
+    StateMachine -x ScanState: delete
+     deactivate ScanState
+    SpecialAgent ->> StateMachine: delete
+    StateMachine -x AttackState: delete
+     deactivate AttackState
+    StateMachine -x StateMachine: ~StateMachine
+    deactivate StateMachine
+    main -x SpecialAgent: delete
+    deactivate SpecialAgent
+    deactivate main
+
+
+```
